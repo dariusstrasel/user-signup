@@ -17,9 +17,10 @@
 import webapp2
 import os
 import jinja2
+import input_verification
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
-jinja_env = jinja2.Environment(loader= jinja2.FileSystemLoader(template_dir), autoescape=True)
+jinja_env = jinja2.Environment(loader= jinja2.FileSystemLoader(template_dir), autoescape=True, auto_reload=True)
 
 
 class Handler(webapp2.RequestHandler):
@@ -37,8 +38,18 @@ class Handler(webapp2.RequestHandler):
 
 class MainPage(Handler):
     def get(self):
-        items = self.request.get_all("food")
-        self.render("shopping_list.html", items = items)
+        self.render("sign_up_form.html")
+
+    def post(self):
+        username = self.request.get("username")
+        password = self.request.get("password")
+        password_verification =  self.request.get("verify")
+        email = self.request.get("email")
+
+
+class SubmitHandler(Handler):
+    def get(self):
+        pass
 
 
 class FizzBuzzHandler(Handler):
@@ -48,4 +59,8 @@ class FizzBuzzHandler(Handler):
         self.render('fizzbuzz.html', n=n)
 
 
-app = webapp2.WSGIApplication([('/', MainPage), ('/fizzbuzz', FizzBuzzHandler)], debug=True)
+app = webapp2.WSGIApplication([
+    ('/', MainPage),
+    ('/fizzbuzz', FizzBuzzHandler),
+    ('/submit', SubmitHandler)
+], debug=True)
