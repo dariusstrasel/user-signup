@@ -4,16 +4,16 @@
 
 {% block content %}
 
-<form method="post">
+<form method="post" action="submit">
     <ul class="form-style-1">
         <li>
             <label>
-                Username <span class="required">*</span>
+                Username <span class="required">* {{ username_error }}</span>
             </label>
             <input type="text" name="username" class="field-long" placeholder="Username" />
         </li>
         <li>
-            <label>Password <span class="required">*</span></label>
+            <label>Password <span class="required">* {{ password_error }}</span></label>
             <input type="password" name="password" placeholder="Password" class="field-long" />
         </li>
         <li>
@@ -21,7 +21,7 @@
             <input type="password" name="verify" placeholder="Verify Password" class="field-long" />
         </li>
         <li>
-            <label>Email </label>
+            <label>Email <span class="required">{{ email_error }}</span></label>
             <input type="email" name="email" class="field-long" placeholder="name@example.com" />
         </li>
         <li>

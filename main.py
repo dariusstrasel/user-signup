@@ -17,8 +17,7 @@
 import webapp2
 import os
 import jinja2
-import input_verification
-
+from input_verification import *
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader= jinja2.FileSystemLoader(template_dir), autoescape=True, auto_reload=True)
 
@@ -40,16 +39,35 @@ class MainPage(Handler):
     def get(self):
         self.render("sign_up_form.html")
 
-    def post(self):
-        username = self.request.get("username")
-        password = self.request.get("password")
-        password_verification =  self.request.get("verify")
-        email = self.request.get("email")
-
 
 class SubmitHandler(Handler):
-    def get(self):
-        pass
+    def get(self, **kwargs):
+        self.render("sign_up_form.html", username_error=" Invalid username.")
+        #return self.render("sign_up_form.html", parameter=parameter_value)
+
+    def post(self):
+
+        username = self.request.get("username")
+        if not valid_username(username):
+            return self.render("sign_up_form.html", username_error=" Invalid username.")
+
+
+        password = self.request.get("password")
+        if not valid_password(password):
+            return self.render("sign_up_form.html", password_error=" Invalid password.")
+
+
+        password_verification =  self.request.get("verify")
+        if not verify_password(password, password_verification):
+            return self.render("sign_up_form.html", password_error=" Password's do not match.")
+
+
+        email = self.request.get("email")
+        if len(email) != 0:
+            if not valid_email(email):
+                return self.render("sign_up_form.html", email_error=" Invalid email")
+
+        return self.render("success_page.html", username=username)
 
 
 class FizzBuzzHandler(Handler):

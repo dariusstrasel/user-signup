@@ -9,21 +9,20 @@ def verify_password(pswd_one, pswd_two):
 
 def valid_username(username):
     USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
-    return USER_RE.match(username)
+    if USER_RE.match(username):
+        return True
+    return False
 
 
 def valid_password(password):
     PASSWORD_RE = re.compile(r"^.{3,20}$")
-    return PASSWORD_RE.match(password)
+    if PASSWORD_RE.match(password):
+        return True
+    return False
 
 
 def valid_email(email):
     EMAIL_RE = re.compile(r"^[\S]+@[\S]+.[\S]+$")
-    return EMAIL_RE.match(email)
-
-
-def valid_input(username, password, verify_pswd, email):
-    valid_username(username)
-    valid_password(password)
-    verify_password(password, verify_pswd)
-    valid_email(email)
+    if EMAIL_RE.match(email):
+        return True
+    return False
